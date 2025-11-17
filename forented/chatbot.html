@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>chatbot</title>
+  </head>
+  <body>
+    <div class="js-container"></div><br>
+
+    <script src="react-basic.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+      function ChatInput() {
+        return (
+          <>
+            <input type="text" name="" id="" placeholder="lasdf" size='9' />
+            <button>send</button>
+          </>
+        );
+      }
+
+      function ChatMessage({messeg, sender}) {
+        // console.log(props);
+        // const messeg = props.messege
+        // const sender = props.sender
+        // const {messeg, sender} = props;
+
+        if (sender === 'user') {
+          return (
+            <div>
+            <img src="https://supersimple.dev/projects/chatbot/user.png" width="50" />
+            {messeg}
+            </div>
+          );
+        }
+
+        return (
+          <div>
+          {messeg}
+          <img src="https://supersimple.dev/projects/chatbot/robot.png" width="50" />
+          </div>
+        );
+      }
+
+      const div = (
+        <>
+          <ChatInput />
+          <ChatMessage messeg="hello bro" sender="user" />
+          <ChatMessage messeg="how are you?" sender="robot" />
+          <ChatMessage messeg="i am fine, thank you!" sender="user" />
+
+        </>
+
+      );
+
+
+
+
+      const container = document.querySelector('.js-container');
+      ReactDOM.createRoot(container).render(div);
+</script>
+  </body>
+</html>
