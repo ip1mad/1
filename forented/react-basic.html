@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>React Basics</title>
+  </head>
+  <body>
+    <div class="js-container"></div><br>
+
+    <script src="react-basic.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+      const container = document.querySelector('.js-container');
+
+      const button = <button>Click Me!</button>;
+      const name = 'name from variable';
+
+      const design = <div>
+        Cotton socks<br /><br/>
+        price: $5<br /><br/>
+        {button}<br />
+        </div>
+
+      const calculate = 10 + 8*2;
+      const cost = <p>produk cost: {calculate} </p>
+
+      const info = <div>
+        <p>produk cost: {calculate} </p>
+        <p>Shipping cost: {88/8} </p>
+        <p>Total cost: {calculate + (88/8)} </p>
+        </div>
+
+      const day = dayjs().format('MMMM D');
+      console.log(day);
+
+      ReactDOM.createRoot(container).render(day);
+</script>
+  </body>
+</html>
