@@ -10,15 +10,59 @@
     <script src="https://unpkg.com/supersimpledev/react.js"></script>
     <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
 
+    <script src="https://unpkg.com/supersimpledev/chatbot.js"></script>
+
     <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
 
     <script src="https://unpkg.com/supersimpledev/babel.js"></script>
     <script type="text/babel">
-      function ChatInput() {
+      function ChatInput({ chatMessages, setChatMessages}) {
+        const [inputText, setInputText] = React.useState('');
+
+        function saveInputText(event) {
+          setInputText(event.target.value)
+        }
+
+        async function sendMessage() {
+          const newMessages = [
+            ...chatMessages,
+            {
+              messeg: inputText, 
+              sender: "user",
+              id: crypto.randomUUID()
+            }
+          ]
+          setInputText('')
+
+          setChatMessages(newMessages);
+
+          const response = await Chatbot.getResponseAsync(inputText);
+          console.log(response)
+          setChatMessages([
+            ...newMessages,
+            {
+              messeg: response, 
+              sender: "robot",
+              id: crypto.randomUUID()
+            }
+          ]);
+
+
+        }
+
+        function enterFitur(params) {
+          if (params.key === 'Enter') {
+            sendMessage();
+          } 
+          if (params.key === 'Escape') {
+            setInputText('');
+          }
+        }
+
         return (
           <>
-            <input type="text" name="" id="" placeholder="lasdf" size='9' />
-            <button>send</button>
+            <input onKeyDown={enterFitur} type="text" name="" id="" placeholder="lasdf" size='9' onChange={saveInputText} value={inputText} />
+            <button onClick={sendMessage} >send</button>
           </>
         );
       }
@@ -28,7 +72,7 @@
         // const messeg = props.messege
         // const sender = props.sender
         // const {messeg, sender} = props;
-
+        /*
         if (sender === 'user') {
           return (
             <div>
@@ -38,30 +82,120 @@
           );
         }
 
+        */
         return (
           <div>
+          {sender === 'robot' && (
+            <img src="https://supersimple.dev/projects/chatbot/robot.png" width="50" />
+            ) }
           {messeg}
-          <img src="https://supersimple.dev/projects/chatbot/robot.png" width="50" />
+          {sender === 'user' && (
+            <img src="https://supersimple.dev/projects/chatbot/user.png" width="50" />
+            ) }
           </div>
         );
       }
 
-      const div = (
-        <>
-          <ChatInput />
-          <ChatMessage messeg="hello bro" sender="user" />
-          <ChatMessage messeg="how are you?" sender="robot" />
-          <ChatMessage messeg="i am fine, thank you!" sender="user" />
+      function ChatMessages({chatMessages, setChatMessages}) {
 
+        // const [chatMessages, setChatMessages] = array;
+        // const chatMesseges = array[0]; // data
+        // const setChatMessages = array[1]; // function to update data
+
+            
+    
+        const chat = chatMessages.map((chatssd)=> {
+          return (
+            <ChatMessage 
+              messeg={chatssd.messeg} 
+              sender={chatssd.sender} 
+              key={chatssd.id}
+            />
+          );
+        });
+
+        return (
+          <>
+            {chat}
+          </>
+        );
+
+      }
+
+
+
+      function App() {
+        const [chatMessages, setChatMessages] = React.useState(
+          [{
+              messeg: "hello bro", 
+              sender: "user",
+              id: 1
+            },{
+              messeg: "how are you?", 
+              sender: "robot",
+              id: 2
+            },{
+              messeg: "i am fine, thank you!", 
+              sender: "user",
+              id: 3
+            }]
+        );
+
+        return (
+          <>
+          <ChatInput 
+            chatMessages = {chatMessages}
+            setChatMessages = {setChatMessages}
+            />
+          <ChatMessages 
+            chatMessages = {chatMessages}
+            setChatMessages = {setChatMessages}
+            />
         </>
+        );
+      }
+      
 
-      );
+      function MengimputText(params) {
+        const Exlample = 'alice'
+        const [inputText, setInputText] = React.useState('');
+        function saveInputText(event) {
+          setInputText(event.target.value)
+        }
+
+        function resetInputText() {
+          setInputText('');
+        }
+
+        function example(params) {
+          setInputText(Exlample);
+        }
+
+        return (
+          <>
+          <input type="text" onChange={saveInputText} value={inputText} placeholder='type your name' />
+          <button onClick={resetInputText} >Reset</button>
+          <button onClick={example} >Exlample</button>
+          <p>Hello {inputText}</p>
+          </>
+        );
+      }
+      
+
+      function App2(props) {
+        return (
+          <>
+            <MengimputText />
+          </>
+        );
+      }
 
 
 
+      
 
       const container = document.querySelector('.js-container');
-      ReactDOM.createRoot(container).render(div);
+      ReactDOM.createRoot(container).render(<App />);
 </script>
   </body>
 </html>
